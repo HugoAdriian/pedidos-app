@@ -1,6 +1,5 @@
-import { Redirect } from 'expo-router';
+import { Redirect, Stack } from 'expo-router';
 
-import AppTabs from '@/components/app-tabs';
 import { useAuth } from '@/features/auth/AuthContext';
 
 export default function AppLayout() {
@@ -8,5 +7,12 @@ export default function AppLayout() {
 
   if (!session) return <Redirect href="/login" />;
 
-  return <AppTabs />;
+  return (
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="business/[id]" options={{ title: 'Menú', headerBackTitle: 'Atrás' }} />
+      <Stack.Screen name="product/[id]" options={{ title: 'Producto', headerBackTitle: 'Atrás' }} />
+      <Stack.Screen name="cart" options={{ title: 'Mi carrito', headerBackTitle: 'Atrás' }} />
+    </Stack>
+  );
 }

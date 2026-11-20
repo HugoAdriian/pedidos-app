@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { ActivityIndicator, FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
@@ -7,17 +8,22 @@ import { ThemedView } from '@/components/themed-view';
 import { Business, fetchBusinesses } from '@/features/businesses/api';
 
 function BusinessCard({ business }: { business: Business }) {
+  const router = useRouter();
+
   return (
-    <ThemedView type="backgroundElement" style={styles.card}>
-      <View style={styles.cardHeader}>
-        <ThemedText type="subtitle" style={styles.cardTitle}>{business.name}</ThemedText>
-        <View style={[styles.badge, { backgroundColor: business.is_open ? '#2e7d32' : '#757575' }]}>
-          <ThemedText style={styles.badgeText}>{business.is_open ? 'Abierto' : 'Cerrado'}</ThemedText>
+    <Pressable
+      onPress={() => router.push({ pathname: '/business/[id]', params: { id: business.id } })}>
+      <ThemedView type="backgroundElement" style={styles.card}>
+        <View style={styles.cardHeader}>
+          <ThemedText type="subtitle" style={styles.cardTitle}>{business.name}</ThemedText>
+          <View style={[styles.badge, { backgroundColor: business.is_open ? '#2e7d32' : '#757575' }]}>
+            <ThemedText style={styles.badgeText}>{business.is_open ? 'Abierto' : 'Cerrado'}</ThemedText>
+          </View>
         </View>
-      </View>
-      {business.description && <ThemedText>{business.description}</ThemedText>}
-      {business.address && <ThemedText type="small">{business.address}</ThemedText>}
-    </ThemedView>
+        {business.description && <ThemedText>{business.description}</ThemedText>}
+        {business.address && <ThemedText type="small">{business.address}</ThemedText>}
+      </ThemedView>
+    </Pressable>
   );
 }
 
