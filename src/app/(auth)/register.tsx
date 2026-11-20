@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Colors } from '@/constants/theme';
+import { Brand, Colors } from '@/constants/theme';
 import { useAuth } from '@/features/auth/AuthContext';
 
 export default function RegisterScreen() {
@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
   form: { paddingHorizontal: 24, gap: 14 },
   title: { textAlign: 'center', marginBottom: 12 },
   input: { borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, fontSize: 16 },
-  error: { color: '#d32f2f', textAlign: 'center' },
-  button: { backgroundColor: '#2e7d32', borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
+  error: { color: Brand.danger, textAlign: 'center' },
+  button: { backgroundColor: Brand.primary, borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
   buttonText: { color: '#fff', fontWeight: '600' },
   link: { textAlign: 'center', marginTop: 8 },
 });

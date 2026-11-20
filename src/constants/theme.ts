@@ -1,6 +1,6 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://unistyl.es/), etc.
+ * Colores de la app. `Colors` cambia según el modo claro/oscuro del teléfono;
+ * `Brand` son colores de relleno (botones, etiquetas) con texto blanco encima.
  */
 
 import '@/global.css';
@@ -9,19 +9,29 @@ import { Platform } from 'react-native';
 
 export const Colors = {
   light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
+    text: '#2B1D14',
+    background: '#FBF6EF',
+    backgroundElement: '#F4EADC',
+    backgroundSelected: '#E9DCC8',
+    textSecondary: '#6B5645',
   },
   dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
+    text: '#F5EBDD',
+    background: '#1A130E',
+    backgroundElement: '#2A2018',
+    backgroundSelected: '#3A2D22',
+    textSecondary: '#C2AE9A',
   },
+} as const;
+
+export const Brand = {
+  primary: '#6F4E37', // café: acciones principales
+  accent: '#AD5F29', // caramelo: acciones secundarias
+  success: '#3E7B3A', // verde: agregar, abierto, listo
+  danger: '#B3402D', // rojo: eliminar, cancelar, errores
+  info: '#3B6E8F', // azul grisáceo: informativo
+  neutral: '#7A6A5C', // neutro: pendiente, controles
+  neutralDark: '#5E5248', // neutro oscuro: entregado
 } as const;
 
 export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;

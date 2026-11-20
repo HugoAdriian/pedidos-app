@@ -15,7 +15,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Colors } from '@/constants/theme';
+import { Brand, Colors } from '@/constants/theme';
 import { cartTotal, useCart } from '@/features/cart/store';
 import { supabase } from '@/lib/supabase';
 
@@ -131,12 +131,12 @@ const styles = StyleSheet.create({
   info: { flex: 1, gap: 2 },
   name: { fontWeight: '600' },
   stepper: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  stepButton: { width: 34, height: 34, borderRadius: 17, backgroundColor: '#757575', alignItems: 'center', justifyContent: 'center' },
+  stepButton: { width: 34, height: 34, borderRadius: 17, backgroundColor: Brand.neutral, alignItems: 'center', justifyContent: 'center' },
   stepText: { color: '#fff', fontSize: 18, fontWeight: '600' },
   quantity: { minWidth: 24, textAlign: 'center', fontWeight: '600' },
   notes: { borderRadius: 12, padding: 14, marginTop: 16, minHeight: 70, fontSize: 16, textAlignVertical: 'top' },
   footer: { paddingHorizontal: 20, paddingTop: 12, gap: 10 },
-  error: { color: '#d32f2f' },
-  confirmButton: { backgroundColor: '#2e7d32', borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
+  error: { color: Brand.danger },
+  confirmButton: { backgroundColor: Brand.primary, borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
   confirmText: { color: '#fff', fontWeight: '600' },
 });

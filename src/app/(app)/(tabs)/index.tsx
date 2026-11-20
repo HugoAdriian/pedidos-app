@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Brand } from '@/constants/theme';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Business, fetchBusinesses } from '@/features/businesses/api';
@@ -16,7 +17,7 @@ function BusinessCard({ business }: { business: Business }) {
       <ThemedView type="backgroundElement" style={styles.card}>
         <View style={styles.cardHeader}>
           <ThemedText type="subtitle" style={styles.cardTitle}>{business.name}</ThemedText>
-          <View style={[styles.badge, { backgroundColor: business.is_open ? '#2e7d32' : '#757575' }]}>
+          <View style={[styles.badge, { backgroundColor: business.is_open ? Brand.success : Brand.neutral }]}>
             <ThemedText style={styles.badgeText}>{business.is_open ? 'Abierto' : 'Cerrado'}</ThemedText>
           </View>
         </View>
@@ -73,6 +74,6 @@ const styles = StyleSheet.create({
   cardTitle: { flexShrink: 1 },
   badge: { borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },
   badgeText: { color: '#fff', fontSize: 12, fontWeight: '600' },
-  error: { color: '#d32f2f', textAlign: 'center', marginTop: 24 },
+  error: { color: Brand.danger, textAlign: 'center', marginTop: 24 },
   empty: { textAlign: 'center', marginTop: 40 },
 });

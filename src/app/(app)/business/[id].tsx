@@ -3,6 +3,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ActivityIndicator, Alert, Linking, Pressable, SectionList, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Brand } from '@/constants/theme';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { fetchBusinessMenu } from '@/features/businesses/api';
@@ -121,9 +122,9 @@ const styles = StyleSheet.create({
   productName: { fontWeight: '600' },
   price: { fontWeight: '600' },
   separator: { height: 8 },
-  error: { color: '#d32f2f', textAlign: 'center' },
+  error: { color: Brand.danger, textAlign: 'center' },
   bottomBar: { paddingHorizontal: 20, paddingTop: 12, gap: 8 },
-  cartButton: { backgroundColor: '#2e7d32', borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
-  mapButton: { backgroundColor: '#1565c0', borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
+  cartButton: { backgroundColor: Brand.primary, borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
+  mapButton: { backgroundColor: Brand.accent, borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
   buttonText: { color: '#fff', fontWeight: '600' },
 });

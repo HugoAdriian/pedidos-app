@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Brand } from '@/constants/theme';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { fetchProduct, ProductOptionGroup } from '@/features/businesses/api';
@@ -173,12 +174,12 @@ const styles = StyleSheet.create({
   content: { padding: 20, gap: 10, paddingBottom: 32 },
   group: { gap: 8, marginTop: 16 },
   option: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderRadius: 12, padding: 14 },
-  error: { color: '#d32f2f', textAlign: 'center' },
+  error: { color: Brand.danger, textAlign: 'center' },
   bottomBar: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 20, paddingTop: 12 },
   stepper: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  stepButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#757575', alignItems: 'center', justifyContent: 'center' },
+  stepButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: Brand.neutral, alignItems: 'center', justifyContent: 'center' },
   stepText: { color: '#fff', fontSize: 20, fontWeight: '600' },
   quantity: { minWidth: 28, textAlign: 'center', fontWeight: '600' },
-  addButton: { flex: 1, backgroundColor: '#2e7d32', borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
+  addButton: { flex: 1, backgroundColor: Brand.success, borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
   addText: { color: '#fff', fontWeight: '600' },
 });
