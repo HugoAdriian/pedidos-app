@@ -1,56 +1,130 @@
-# Welcome to your Expo app 👋
+# Pedidos App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación móvil para **pedidos en cafeterías y negocios locales**. Los clientes exploran el menú de cada negocio, arman su pedido y siguen su estado en tiempo real. Los negocios se registran, administran su propio menú y reciben los pedidos al instante.
 
-## Get started
+> Estado: en desarrollo activo. Proyecto de portafolio construido de principio a fin (base de datos, seguridad, backend y app móvil).
 
-1. Install dependencies
+## Capturas
 
-   ```bash
-   npm install
-   ```
+| Inicio de sesión | Negocios | Menú |
+|---|---|---|
+| ![Login](docs/screenshots/01-login.png) | ![Negocios](docs/screenshots/02-negocios.png) | ![Menú](docs/screenshots/03-menu.png) |
 
-2. Start the app
+| Producto con opciones | Carrito | Mis pedidos |
+|---|---|---|
+| ![Producto](docs/screenshots/04-producto.png) | ![Carrito](docs/screenshots/05-carrito.png) | ![Mis pedidos](docs/screenshots/06-mis-pedidos.png) |
 
-   ```bash
-   npx expo start
-   ```
+| Panel del negocio | Bandeja de pedidos |
+|---|---|
+| ![Panel](docs/screenshots/07-panel-menu.png) | ![Bandeja](docs/screenshots/08-bandeja-pedidos.png) |
 
-In the output, you'll find options to open the app in a
+## Funcionalidades
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+**Para clientes**
+- Registro e inicio de sesión, con sesión persistente.
+- Lista de negocios con estado abierto o cerrado.
+- Menú por categorías, con productos y precios.
+- Opciones por producto (por ejemplo, tamaño con precio adicional) y cantidad.
+- Carrito de un solo negocio a la vez, con confirmación antes de vaciarlo.
+- Pedido con notas para el negocio.
+- Historial de pedidos con el estado actualizado en tiempo real.
+- Botón **Cómo llegar** que abre la ruta al local en Google Maps.
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+**Para negocios**
+- Registro de la cafetería, con la ubicación tomada del GPS del teléfono.
+- Panel para administrar categorías y productos: crear, editar, eliminar y marcar como disponible o no.
+- Interruptor para abrir o cerrar el negocio.
+- Bandeja de pedidos en tiempo real: el teléfono vibra al llegar uno nuevo.
+- Flujo de estados: pendiente, aceptado, preparando, listo y entregado, con opción de cancelar.
 
-## Get a fresh project
+## Tecnologías
 
-When you're ready, run:
+| Área | Herramientas |
+|---|---|
+| App móvil | React Native, Expo (SDK 58), TypeScript |
+| Navegación | Expo Router (rutas basadas en archivos y rutas protegidas) |
+| Datos del servidor | TanStack Query |
+| Estado local | Zustand (carrito) |
+| Backend | Supabase: PostgreSQL, Auth, Realtime |
+| Ubicación | expo-location y enlaces de Google Maps (sin API key) |
 
-```bash
-npm run reset-project
+## Decisiones técnicas
+
+- **Seguridad a nivel de base de datos (RLS).** Todas las tablas tienen Row Level Security. El catálogo es público para lectura, pero solo el dueño de un negocio puede modificarlo. Cada cliente solo ve sus pedidos y cada dueño solo los de su negocio.
+- **Pedidos creados por una función del servidor.** `create_order()` recalcula los precios desde la base de datos, valida disponibilidad y guarda el pedido de forma atómica. Los usuarios no tienen permiso de insertar pedidos directamente, así que no se puede falsificar un total desde la app.
+- **Permisos por columna.** El dueño solo puede modificar el estado de un pedido, no su total ni otros datos.
+- **Historial inmutable.** Cada línea del pedido guarda una copia del nombre y precio al momento de la compra, así que cambiar el menú después no altera pedidos pasados.
+- **Tiempo real filtrado.** Las suscripciones de Supabase Realtime filtran por cliente o por negocio y respetan las políticas RLS.
+- **Caché sin fugas entre cuentas.** Las consultas incluyen el id del usuario en su clave, para no mostrar datos de otra sesión.
+- **Rutas protegidas.** Los layouts de Expo Router redirigen al login si no hay sesión, y a la app si ya la hay.
+- **Google Maps sin costo.** El botón "Cómo llegar" usa Maps URLs, que no requieren API key ni facturación.
+
+## Estructura del proyecto
+
+```
+src/
+├── app/                      # Pantallas (Expo Router)
+│   ├── (auth)/               # Login y registro
+│   └── (app)/                # Zona con sesión
+│       ├── (tabs)/           # Inicio, Pedidos, Perfil
+│       ├── business/[id]     # Menú de un negocio
+│       ├── product/[id]      # Detalle y opciones de un producto
+│       ├── cart              # Carrito y confirmación
+│       └── my-business/      # Registro, panel de menú y bandeja de pedidos
+├── features/                 # Lógica por dominio
+│   ├── auth/                 # Contexto de sesión
+│   ├── businesses/           # Catálogo (lectura)
+│   ├── cart/                 # Estado del carrito (Zustand)
+│   ├── orders/               # Pedidos del cliente y tiempo real
+│   └── my-business/          # Gestión del negocio
+└── lib/supabase.ts           # Cliente de Supabase
+supabase/
+├── migrations/               # Esquema, permisos, funciones y seguridad
+└── seed.sql                  # Datos de ejemplo
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+## Cómo ejecutarlo
 
-### Other setup steps
+### Requisitos
+- Node.js 22.13 o superior
+- Una cuenta gratuita en [Supabase](https://supabase.com)
+- La app **Expo Go** en un teléfono Android (o un emulador de Android Studio)
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+### 1. Clonar e instalar
+```bash
+git clone https://github.com/HugoAdriian/pedidos-app.git
+cd pedidos-app
+npm install
+```
 
-## Learn more
+### 2. Preparar Supabase
+1. Crea un proyecto nuevo en Supabase.
+2. Abre **SQL Editor** y ejecuta, en orden, los archivos de `supabase/migrations/` (de `001` a `005`).
+3. En **Authentication → Sign In / Providers → Email**, desactiva **Confirm email** mientras desarrollas. Vuelve a activarlo antes de publicar.
 
-To learn more about developing your project with Expo, look at the following resources:
+### 3. Variables de entorno
+Copia el archivo de ejemplo y completa tus datos (URL y clave *publishable* del proyecto, que encuentras en el botón **Connect** de Supabase):
+```bash
+cp .env.example .env
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 4. Arrancar
+```bash
+npx expo start
+```
+Escanea el código QR desde Expo Go.
 
-## Join the community
+### 5. Datos de ejemplo (opcional)
+Registra un usuario desde la app y luego ejecuta `supabase/seed.sql` en el SQL Editor para crear una cafetería de prueba con menú.
 
-Join our community of developers creating universal apps.
+## Próximos pasos
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Edición de opciones de producto (tamaños y extras) desde el panel del negocio.
+- Notificaciones push cuando cambia el estado de un pedido.
+- Pruebas automáticas e integración continua.
+- Pagos en línea.
+- Entrega a domicilio.
+
+## Autor
+
+Hugo Adrián · [GitHub](https://github.com/HugoAdriian)
